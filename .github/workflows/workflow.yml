@@ -16,11 +16,11 @@ env:
 on:
   push:
     branches:
-      - main
+      - develop
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - main
+      - develop
 
 permissions:
   issues: write
