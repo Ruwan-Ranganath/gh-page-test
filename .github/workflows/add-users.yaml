@@ -30,7 +30,7 @@ jobs:
       with:
         azcliversion: latest
         inlineScript: |
-          USER_ID=$(az ad user list --filter "mail eq ${{ github.event.inputs.user_id }}" --query "[].id" -o tsv)
+          USER_ID=$(az ad user list --filter "mail eq '${{ github.event.inputs.user_id }}'" --query "[].id" -o tsv)
           az ad group member add --group parloa-eng-incident  --member-id $USER_ID
 
     - name: Post to a Slack channel eng-mon-incident-group-users
