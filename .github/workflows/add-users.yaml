@@ -24,15 +24,11 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Azure CLI script
-      id: azuregroup
-      uses: azure/CLI@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          USER_ID=$(az ad user list --filter "mail eq '${{ github.event.inputs.user_id }}'" --query "[].objectId" -o tsv)
-          echo "USER_ID: $USER_ID"
-          az ad group member add --group ruwan-eng-incident --member-id $USER_ID
+    - name: Retrive User ObjectID from Entra
+      run:  USER_ID=$(az ad user list --filter "mail eq '${{ github.event.inputs.user_id }}'" --query "[].objectId" -o tsv)
+   
+    - name: Add User to Group
+      run:  az ad group member add --group ruwan-eng-incident --member-id $USER_ID
 
     - name: Post to a Slack channel eng-mon-incident-group-users
       id: slack
