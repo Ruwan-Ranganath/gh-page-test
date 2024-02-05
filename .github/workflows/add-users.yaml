@@ -31,7 +31,7 @@ jobs:
         azcliversion: latest
         inlineScript: |
           USER_ID=$(az ad user show --id ${{ github.event.inputs.user_id }} | jq -r .id)
-          az ad group member add --group ruwan-eng-incident  --member-id $USER_ID
+          az ad group member add --group ruwan-eng-incident  --member-id ruwanranganath@hotmail.com
 
     - name: Post to a Slack channel eng-mon-incident-group-users
       id: slack
