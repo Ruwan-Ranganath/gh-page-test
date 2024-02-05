@@ -28,7 +28,13 @@ jobs:
       run: |
         userEmail="${{ github.event.inputs.user_id }}"
         userId=$(az ad user list --filter "mail eq '$userEmail'" --query [].objectId -o tsv)
-        az ad group member add --group ruwan-eng-incident --member-id $userId
+        echo $userId
+        if [ -z "$userId" ]; then
+          echo "User not found for email $userEmail"
+          exit 1
+        else
+          az ad group member add --group ruwan-eng-incident --member-id $userId
+        fi
       shell: bash
 
     # - name: Retrive User ObjectID from Entra
