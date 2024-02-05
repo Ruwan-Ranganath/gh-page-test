@@ -1,0 +1,44 @@
+name: 'Adding Users to eng-incident'
+
+on:
+  workflow_dispatch:
+    inputs:
+      user_id:
+        description: 'Email id of the Engineer(s) needs add into eng-incident group'
+        required: true
+        type: string
+        default: ""
+
+
+permissions:
+      id-token: write
+      contents: read
+
+
+jobs: 
+ build-and-deploy:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Azure CLI script
+      id: azuregroup
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          USER_ID=$(az ad user show --id ${{ github.event.inputs.user_id }} | jq -r .id)
+          az ad group member add --group ruwan-eng-incident  --member-id $USER_ID
+
+    - name: Post to a Slack channel eng-mon-incident-group-users
+      id: slack
+      uses: slackapi/slack-github-action@v1.25.0
+      if: steps.azuregroup.outcome == 'success'
+      with:
+        channel-id: 'eng-mon-incident-group-users'
+        slack-message: "New user added to eng-incident group : ${{ github.event.inputs.user_id }}"
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
