@@ -25,7 +25,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Retrive User ObjectID from Entra
-      run:  USER_ID=$(az ad user list --filter "mail eq ${{ github.event.inputs.user_id }}" --query "[].id" -o tsv)
+      run:  USER_ID=$(az ad user list --filter "mail eq '${{ github.event.inputs.user_id }}'" --query "[].id" -o tsv)
    
     - name: Add User to Group
       run:  az ad group member add --group ruwan-eng-incident --member-id $USER_ID
