@@ -26,9 +26,8 @@ jobs:
 
     - name: Add user to Azure AD group
       run: |
-        userEmail="${{ github.event.inputs.user_id }}"
-        userId=$(az ad user list --filter "mail eq '$userEmail'" --query "[].id" -o tsv
-        echo $userId
+        USER_ID=$(az ad user list --filter "mail eq '${{ github.event.inputs.user_id }}'" --query "[].id" -o tsv)
+        echo "User ID: '$userId'"
         if [ -z "$userId" ]; then
           echo "User not found for email $userEmail"
           exit 1
