@@ -7,7 +7,7 @@ on:
         description: 'Email id of the Engineer(s) needs add into eng-incident group'
         required: true
         type: string
-        default: ""
+        default: "ruwanranganath@hotmail.com"
 
 
 permissions:
@@ -27,12 +27,12 @@ jobs:
     - name: Add user to Azure AD group
       run: |
         USER_ID=$(az ad user list --filter "mail eq '${{ github.event.inputs.user_id }}'" --query "[].id" -o tsv)
-        echo "User ID: '$userId'"
+        echo "User ID: '$USER_ID'"
         if [ -z "$userId" ]; then
-          echo "User not found for email $userEmail"
+          echo "User not found for email $USER_ID"
           exit 1
         else
-          az ad group member add --group ruwan-eng-incident --member-id "$userId/"
+          az ad group member add --group ruwan-eng-incident --member-id "$USER_ID/"
         fi
       shell: bash
 
