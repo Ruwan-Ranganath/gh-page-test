@@ -14,13 +14,14 @@ env:
   APP_ARTIFACT_LOCATION: "build" # location of client code build output
 
 on:
-  push:
-    branches:
-      - develop
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - develop
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - develop
+  # pull_request:
+  #   types: [opened, synchronize, reopened, closed]
+  #   branches:
+  #     - develop
 
 permissions:
   issues: write
