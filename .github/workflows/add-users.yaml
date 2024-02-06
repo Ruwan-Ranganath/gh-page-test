@@ -24,33 +24,40 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Add user to Azure AD group
-      run: |
-        USER_ID=$(az ad user list --filter "mail eq '${{ github.event.inputs.user_id }}'" --query "[].id" -o tsv)
-        echo "=========="
-        az ad user list
-        echo "============="
-        az ad user list --filter "mail eq '${{ github.event.inputs.user_id }}'" --query "[].id" -o tsv
-        echo "================"
-        echo "User ID: '$USER_ID'"
-        if [ -z "$USER_ID" ]; then
-          echo "User not found for email $USER_ID"
-          exit 1
-        else
-          az ad group member add --group ruwan-eng-incident --member-id $USER_ID
-        fi
-      shell: bash
+    # - name: Add user to Azure AD group
+    #   run: |
+    #     USER_ID=$(az ad user list --filter "mail eq '${{ github.event.inputs.user_id }}'" --query "[].id" -o tsv)
+    #     echo "=========="
+    #     az ad user list
+    #     echo "============="
+    #     az ad user list --filter "mail eq '${{ github.event.inputs.user_id }}'" --query "[].id" -o tsv
+    #     echo "================"
+    #     echo "User ID: '$USER_ID'"
+    #     if [ -z "$USER_ID" ]; then
+    #       echo "User not found for email $USER_ID"
+    #       exit 1
+    #     else
+    #       az ad group member add --group ruwan-eng-incident --member-id $USER_ID
+    #     fi
+    #   shell: bash
 
-    # - name: Retrive User ObjectID from Entra
-    #   run:  USER_ID=$(az ad user list --filter "mail eq '${{ github.event.inputs.user_id }}'" --query "[].objectId" -o tsv)
+    - name: Retrive User ObjectID from Entra
+      run:  USER_ID=$(az ad user list --filter "mail eq '${{ github.event.inputs.user_id }}'" --query "[].id" -o tsv)
    
-    # - name: Add User to Group
-    #   run:  az ad group member add --group ruwan-eng-incident --member-id $USER_ID
+    - name: Add User to Group
+      id: adduserentra
+      run: |
+        if [ -z "$USER_ID" ]; then
+            echo "User not found for email $USER_ID"
+            exit 1
+          else
+            az ad group member add --group ruwan-eng-incident --member-id $USER_ID
+          fi
 
     - name: Post to a Slack channel eng-mon-incident-group-users
       id: slack
       uses: slackapi/slack-github-action@v1.25.0
-      if: steps.azuregroup.outcome == 'success'
+      if: steps.adduserentra.outcome == 'success'
       with:
         channel-id: 'eng-mon-incident-group-users'
         slack-message: "New user added to eng-incident group : ${{ github.event.inputs.user_id }}"
