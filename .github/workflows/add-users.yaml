@@ -33,7 +33,7 @@ jobs:
           echo "User not found for email $userEmail"
           exit 1
         else
-          az ad group member add --group ruwan-eng-incident --member-id $userId
+          az ad group member add --group ruwan-eng-incident --member-id "$userId/"
         fi
       shell: bash
 
