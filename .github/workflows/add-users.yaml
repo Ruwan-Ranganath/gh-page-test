@@ -33,11 +33,11 @@ jobs:
         az ad user list --filter "mail eq '${{ github.event.inputs.user_id }}'" --query "[].id" -o tsv
         echo "================"
         echo "User ID: '$USER_ID'"
-        if [ -z "$userId" ]; then
+        if [ -z "$USER_ID" ]; then
           echo "User not found for email $USER_ID"
           exit 1
         else
-          az ad group member add --group ruwan-eng-incident --member-id ${{ github.event.inputs.user_id }}
+          az ad group member add --group ruwan-eng-incident --member-id $USER_ID
         fi
       shell: bash
 
