@@ -3,6 +3,11 @@ name: 'Adding Users to eng-incident'
 on:
   workflow_dispatch:
     inputs:
+      environment:
+        description: 'The Github Actions environment to use'
+        required: true
+        type: string
+        default: ruwan-test
       user_id:
         description: 'Email id of the Engineer(s) needs add into eng-incident group'
         required: true
@@ -18,6 +23,8 @@ permissions:
 jobs: 
  build-and-deploy:
   runs-on: ubuntu-latest
+  environment: 
+  name:  ${{ inputs.environment }}
   steps:
     - name: Azure login
       uses: azure/login@v1
