@@ -2,28 +2,22 @@ name: 'workflow for test'
 
 on:
   workflow_dispatch:
+    inputs:
+      service_names:
+        description: 'Service names(s) to update'
+        required: true
+        type: string
+        default: api,engine,voice-gateway
+      commit_hash:
+        description: 'The Terraform workspace to use'
+        required: true
+        type: string
 
 jobs:
-  example-job:
-    runs-on: ubuntu-latest
-    steps:
-      # Fetch the latest commit hash of the default branch
-      - name: Get latest commit hash
-        id: get-latest-commit
-        run: |
-          LATEST_COMMIT=$(gh repo view --json defaultBranchRef --jq '.defaultBranchRef.target.oid')
-          echo "Latest commit hash is $LATEST_COMMIT"
-          echo "::set-output name=commit_hash::$LATEST_COMMIT"
-
-      # Use the latest commit hash in subsequent steps or jobs
-      - name: Use latest commit hash
-        run: |
-          echo "Using commit hash ${{ steps.get-latest-commit.outputs.commit_hash }}"
-      
-      # Example of calling another workflow with the commit hash
-      - name: Call PR workflow with commit hash
-        uses: Ruwan-Ranganath/workflows/.github/workflows/reusable-workflow.yaml@main
-        with:
-          service_name: mytestservie1
-          tf_workspace: qe-test
-          commit_hash: ${{ steps.get-latest-commit.outputs.commit_hash }}
+  steps:
+    name: Call PR workflow
+    uses: Ruwan-Ranganath/workflows/.github/workflows/reusable-workflow.yaml@main
+    with:
+      service_name: ${{ inputs.service_name }}
+      tf_workspace: qe-test
+      commit_hash: ${{ inputs.commit_hash }}
