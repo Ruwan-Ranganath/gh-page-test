@@ -7,14 +7,6 @@ jobs:
   example-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-      
-      # Ensure GitHub CLI is available and authenticated
-      - name: Setup GitHub CLI
-        run: |
-          gh auth setup-git
-
       # Fetch the latest commit hash of the default branch
       - name: Get latest commit hash
         id: get-latest-commit
