@@ -9,7 +9,7 @@ on:
         type: string
         default: api,engine,voice-gateway
       commit_hash:
-        description: 'The Terraform workspace to use'
+        description: 'commit hash to update as Image tag'
         required: true
         type: string
 
