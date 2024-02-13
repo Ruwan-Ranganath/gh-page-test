@@ -1,0 +1,13 @@
+name: 'workflow for test'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-workflow:
+    name: Call PR workflow
+    uses: ./.github/workflows/reusable-workflow.yaml
+    with:
+      service_name: mytestservie1
+      tf_workspace: qe-test
+    secrets: inherit
