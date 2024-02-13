@@ -7,7 +7,7 @@ on:
         description: 'Service names(s) to update'
         required: true
         type: string
-        default: api,engine,voice-gateway
+        default: "api,engine,voice-gateway"
       commit_hash:
         description: 'commit hash to update as Image tag'
         required: true
