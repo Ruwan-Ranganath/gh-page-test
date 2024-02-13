@@ -15,15 +15,9 @@ on:
 
 jobs:
   update-services:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-      
-      # Add additional steps as needed before calling the reusable workflow
-      - name: Call PR workflow for each service
-        uses: Ruwan-Ranganath/workflows/.github/workflows/reusable-workflow.yaml@main
-        with:
-          service_name: ${{ github.event.inputs.service_names }}
-          tf_workspace: qe-test
-          commit_hash: ${{ github.event.inputs.commit_hash }}
+      name: Call PR workflow for each service
+      uses: Ruwan-Ranganath/workflows/.github/workflows/reusable-workflow.yaml@main
+      with:
+        service_names: ${{ github.event.inputs.service_names }}
+        tf_workspace: qe-test
+        commit_hash: ${{ github.event.inputs.commit_hash }}
