@@ -6,7 +6,7 @@ on:
 jobs:
   call-workflow:
     name: Call PR workflow
-    uses: Ruwan-Ranganath/workflows/reusable-workflow.yaml
+    uses: Ruwan-Ranganath/workflows/.github/workflows/reusable-workflow.yaml@main
     with:
       service_name: mytestservie1
       tf_workspace: qe-test
