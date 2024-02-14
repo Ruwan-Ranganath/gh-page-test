@@ -21,8 +21,6 @@ jobs:
       GH_TOKEN: ${{ github.token }}  
     steps:
     - uses: actions/checkout@v4
-      with:
-        ref: my-branch
     
     - id: identify
       run: |
@@ -32,7 +30,7 @@ jobs:
         # PR_HEAD_SHA=$(gh pr list --state open --limit 1 --json headRefOid --jq '.[0].headRefOid')
         # echo "PR_HEAD_SHA=${PR_HEAD_SHA}" >> $GITHUB_OUTPUT
         # echo "${PR_HEAD_SHA}"
-        echo "PR_HEAD_SHA=$(gh pr list --state open --limit 1 --json headRefOid --jq '.[0].headRefOid')" >> $GITHUB_OUTPUT
+        echo "PR_HEAD_SHA=$(gh pr list --state open --limit 1 --json headRefOid --jq '.[0].headRefOid')"
     outputs:
       PR_HEAD_SHA: ${{ steps.identify.outputs.PR_HEAD_SHA }}
 
