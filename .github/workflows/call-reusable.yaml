@@ -42,17 +42,17 @@ jobs:
 
       
   update-services:
-      - uses: actions/checkout@v4
-      
-      - id: identify
-        run: |
-          gh repo view --json defaultBranchRef --jq '.defaultBranchRef.target.oid'
-          # Capture the latest open PR's head commit SHA
-          echo "PR_HEAD_SHA=$(gh pr list --state open --limit 1 --json headRefOid --jq '.[0].headRefOid')" >> $GITHUB_ENV
+    - uses: actions/checkout@v4
+    
+    - id: identify
+      run: |
+        gh repo view --json defaultBranchRef --jq '.defaultBranchRef.target.oid'
+        # Capture the latest open PR's head commit SHA
+        echo "PR_HEAD_SHA=$(gh pr list --state open --limit 1 --json headRefOid --jq '.[0].headRefOid')" >> $GITHUB_ENV
 
-      - name: Call PR workflow for each service
-        uses: Ruwan-Ranganath/workflows/.github/workflows/reusable-workflow.yaml@main
-        with:
-          service_names: ${{ github.event.inputs.service_names }}
-          tf_workspace: ${{ env.PR_HEAD_SHA }}
-          commit_hash: ${{ github.event.inputs.commit_hash }}
+    - name: Call PR workflow for each service
+      uses: Ruwan-Ranganath/workflows/.github/workflows/reusable-workflow.yaml@main
+      with:
+        service_names: ${{ github.event.inputs.service_names }}
+        tf_workspace: ${{ env.PR_HEAD_SHA }}
+        commit_hash: ${{ github.event.inputs.commit_hash }}
