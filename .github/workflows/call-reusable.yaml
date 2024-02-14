@@ -12,6 +12,11 @@ on:
         description: 'commit hash to update as Image tag'
         required: true
         type: string
+      tf_workspace:
+        description: commit hash from github_sha variable 
+        required: true
+        type: string
+        default: ${{ github.sha }}
 
 jobs:
   update-services:
@@ -19,5 +24,5 @@ jobs:
       uses: Ruwan-Ranganath/workflows/.github/workflows/reusable-workflow.yaml@main
       with:
         service_names: ${{ github.event.inputs.service_names }}
-        tf_workspace: ${{ github.sha }}
+        tf_workspace: ${{ github.event.inputs.tf_workspace }}
         commit_hash: ${{ github.event.inputs.commit_hash }}
