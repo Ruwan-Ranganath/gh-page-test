@@ -33,7 +33,7 @@ jobs:
 
 
     outputs:
-      git_pr_sha: ${{ steps.identify.outputs.PR_HEAD_SHA }}
+      PR_HEAD_SHA: ${{ steps.first-job.outputs.PR_HEAD_SHA }}
 
       
   update-services:
