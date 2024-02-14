@@ -31,6 +31,8 @@ jobs:
         PR_HEAD_SHA=$(gh pr list --state open --limit 1 --json headRefOid --jq '.[0].headRefOid')
         echo "PR_HEAD_SHA=${PR_HEAD_SHA}" >> $GITHUB_OUTPUT
 
+        echo "${PR_HEAD_SHA}"
+
 
     outputs:
       PR_HEAD_SHA: ${{ steps.first-job.outputs.PR_HEAD_SHA }}
