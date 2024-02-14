@@ -22,22 +22,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        ref: newbranch
+        ref: my-branch
     
     - id: identify
       run: |
 
         gh repo view --json defaultBranchRef --jq '.defaultBranchRef.target.oid'
-
         # Capture the latest open PR's head commit SHA
         # PR_HEAD_SHA=$(gh pr list --state open --limit 1 --json headRefOid --jq '.[0].headRefOid')
         # echo "PR_HEAD_SHA=${PR_HEAD_SHA}" >> $GITHUB_OUTPUT
-
         # echo "${PR_HEAD_SHA}"
-
         echo "PR_HEAD_SHA=$(gh pr list --state open --limit 1 --json headRefOid --jq '.[0].headRefOid')" >> $GITHUB_OUTPUT
-
-
     outputs:
       PR_HEAD_SHA: ${{ steps.identify.outputs.PR_HEAD_SHA }}
 
