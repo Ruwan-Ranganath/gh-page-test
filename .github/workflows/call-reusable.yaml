@@ -37,7 +37,7 @@ jobs:
 
 
     outputs:
-      PR_HEAD_SHA: ${{ steps.first-job.outputs.PR_HEAD_SHA }}
+      PR_HEAD_SHA: ${{ first-job.steps.identify.outputs.PR_HEAD_SHA }}
 
       
   update-services:
