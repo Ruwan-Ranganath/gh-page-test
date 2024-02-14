@@ -38,7 +38,7 @@ jobs:
       
   update-services:
       name: Call PR workflow for each service
-      needs: first-job
+      needs: [first-job]
       uses: Ruwan-Ranganath/workflows/.github/workflows/reusable-workflow.yaml@main
       with:
         service_names: ${{ github.event.inputs.service_names }}
