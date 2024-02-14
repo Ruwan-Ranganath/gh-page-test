@@ -15,7 +15,7 @@ on:
 
 
 jobs:
-  first-job:
+  identify:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}  
@@ -37,16 +37,16 @@ jobs:
 
 
     outputs:
-      PR_HEAD_SHA: ${{ first-job.steps.identify.outputs.PR_HEAD_SHA }}
+      PR_HEAD_SHA: ${{ steps.identify.outputs.PR_HEAD_SHA }}
 
       
   update-services:
       name: Call PR workflow for each service
-      needs: [first-job]
+      needs: [identify]
       uses: Ruwan-Ranganath/workflows/.github/workflows/reusable-workflow.yaml@main
       env:
-        PR_HEAD_SHA: ${{ needs.first-job.outputs.PR_HEAD_SHA }}
+        PR_HEAD_SHA: ${{ needs.identify.outputs.PR_HEAD_SHA }}
       with:
         service_names: ${{ github.event.inputs.service_names }}
-        tf_workspace: ${{ needs.first-job.outputs.PR_HEAD_SHA }}
+        tf_workspace: ${{ needs.identify.outputs.PR_HEAD_SHA }}
         commit_hash: ${{ github.event.inputs.commit_hash }}
