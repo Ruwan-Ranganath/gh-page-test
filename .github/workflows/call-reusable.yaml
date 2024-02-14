@@ -32,27 +32,14 @@ jobs:
         echo "PR_HEAD_SHA=${PR_HEAD_SHA}" >> $GITHUB_OUTPUT
 
 
-        echo "==============="
-        
-        # use bash variable expression to get the substring
-        echo "::set-output name=pr_head_sha::${PR_HEAD_SHA}"
-
     outputs:
       git_pr_sha: ${{ steps.identify.outputs.PR_HEAD_SHA }}
 
       
   update-services:
-    - uses: actions/checkout@v4
-    
-    - id: identify
-      run: |
-        gh repo view --json defaultBranchRef --jq '.defaultBranchRef.target.oid'
-        # Capture the latest open PR's head commit SHA
-        echo "PR_HEAD_SHA=$(gh pr list --state open --limit 1 --json headRefOid --jq '.[0].headRefOid')" >> $GITHUB_ENV
-
-    - name: Call PR workflow for each service
-      uses: Ruwan-Ranganath/workflows/.github/workflows/reusable-workflow.yaml@main
-      with:
-        service_names: ${{ github.event.inputs.service_names }}
-        tf_workspace: ${{ env.PR_HEAD_SHA }}
-        commit_hash: ${{ github.event.inputs.commit_hash }}
+    name: Call PR workflow for each service
+    uses: Ruwan-Ranganath/workflows/.github/workflows/reusable-workflow.yaml@main
+    with:
+      service_names: ${{ github.event.inputs.service_names }}
+      tf_workspace: ${{ needs.first-job.outputs.PR_HEAD_SHA }}
+      commit_hash: ${{ github.event.inputs.commit_hash }}
