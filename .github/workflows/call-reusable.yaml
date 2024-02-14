@@ -44,6 +44,8 @@ jobs:
       name: Call PR workflow for each service
       needs: [first-job]
       uses: Ruwan-Ranganath/workflows/.github/workflows/reusable-workflow.yaml@main
+      env:
+        PR_HEAD_SHA: ${{ needs.first-job.outputs.PR_HEAD_SHA }}
       with:
         service_names: ${{ github.event.inputs.service_names }}
         tf_workspace: ${{ needs.first-job.outputs.PR_HEAD_SHA }}
