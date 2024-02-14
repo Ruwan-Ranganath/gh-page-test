@@ -20,6 +20,13 @@ jobs:
     steps:
     - id: identify
       run: |
+
+        gh repo view --json defaultBranchRef --jq '.defaultBranchRef.target.oid'
+        gh pr list --state open --limit 1 --json number --jq '.[0].number'
+        gh pr list --state open --limit 1 --json headRefOid --jq '.[0].headRefOid'
+
+        echo "==============="
+        
         # use bash variable expression to get the substring
         export GIT_PR_SHA="${{ github.sha }}"
         export GIT_PR_SHA_SHORT="${GIT_PR_SHA:0:10}"
