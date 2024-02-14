@@ -21,7 +21,8 @@ jobs:
       GH_TOKEN: ${{ github.token }}  
     steps:
     - uses: actions/checkout@v4
-      ref: 'newbranch'
+      with:
+        ref: newbranch
     
     - id: identify
       run: |
