@@ -19,5 +19,5 @@ jobs:
       uses: Ruwan-Ranganath/workflows/.github/workflows/reusable-workflow.yaml@main
       with:
         service_names: ${{ github.event.inputs.service_names }}
-        tf_workspace: qe-test
+        tf_workspace: ${{ github.sha }}
         commit_hash: ${{ github.event.inputs.commit_hash }}
