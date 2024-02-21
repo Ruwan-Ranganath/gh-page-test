@@ -1,0 +1,53 @@
+name: Update Callx overlays version tags to Prod
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_dir:
+        description: "Base directory"
+        required: true
+        default: "../../components"
+        type: string
+      service_prod_dir:
+        description: "Production Overlay"
+        required: true
+        default: "azure-production"
+        type: string
+      service_qe_dir:
+        description: "QE overlay"
+        required: true
+        default: "callx-qe"
+        type: string
+      service_names:
+        required: true
+        type: string
+        default: "test"
+      commit_hash:
+        required: true
+        type: string
+        default: "test"
+
+jobs:
+  promote:
+    name: Compare version tags
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compare and update tags of Production & callx-qe
+        run: |
+          .github/scripts/compare-tags.sh ${{ github.event.inputs.base_dir }} ${{ github.event.inputs.service_prod_dir }} ${{ github.event.inputs.service_qe_dir }} ${{ github.event.inputs.service_names }} ${{ github.event.inputs.commit_hash }}
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: "GitHub Actions"
+          author_email: "actions@github.com"
+          message: "Changes to  overlay"
+          branch: ${{ github.event.inputs.commit_hash }}-prod-equal
+
+      - name: create pull request
+        run: gh pr create -B main -H ${{ github.event.inputs.commit_hash }}-prod-equal --title 'Merge ${{ github.event.inputs.commit_hash }}-prod-equal into main' --body 'Created by Github action'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
