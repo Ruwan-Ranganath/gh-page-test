@@ -37,7 +37,7 @@ jobs:
 
       - name: Compare and update tags of Production & callx-qe
         run: |
-          .github/scripts/compare-tags.sh ${{ github.event.inputs.base_dir }} ${{ github.event.inputs.service_prod_dir }} ${{ github.event.inputs.service_qe_dir }} ${{ github.event.inputs.service_names }} ${{ github.event.inputs.commit_hash }}
+          bash .github/scripts/compare-tags.sh ${{ github.event.inputs.base_dir }} ${{ github.event.inputs.service_prod_dir }} ${{ github.event.inputs.service_qe_dir }} ${{ github.event.inputs.service_names }} ${{ github.event.inputs.commit_hash }}
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
